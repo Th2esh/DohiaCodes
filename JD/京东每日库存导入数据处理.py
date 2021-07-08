@@ -2,7 +2,7 @@ import pandas as pd
 import pymysql
 import logging
 import os
-
+#这是一个测试Git是否生效的语句
 st = '2021-07-07'
 
 #连接数据库

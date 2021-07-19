@@ -67,7 +67,7 @@ if __name__ == '__main__':
     shipping_code = []
     shipping_sn = []
     #遍历获取到的值并写入到列表
-    jj = res['data']['page']['pageNo']
+    jj = res['data']['page']['pageTotal']
     for i in range(1, int(jj)+1, 1):
         for j in range(100):
             try:

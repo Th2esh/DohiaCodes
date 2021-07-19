@@ -20,8 +20,8 @@ def rq():
     jk = 'order.list.get'
     # json数据
     dr = str(time.strftime("%Y-%m-%d", time.localtime()))
-    # js_data ='{"order_status":"5","startModified":"'+str(dr)+' 00:00:00","endModified":"'+str(dr)+' 23:59:59","sd_code":"998"}'
-    js_data ='{"order_status":"5","startModified":"2021-07-09 15:00:00","endModified":"2021-07-09 19:59:59","sd_code":"998"}'
+    js_data ='{"time_type":"5","order_status":"5","startModified":"'+str(dr)+' 00:00:00","endModified":"'+str(dr)+' 23:59:59","sd_code":"998"}'
+    # js_data ='{"order_status":"5","startModified":"2021-07-09 15:00:00","endModified":"2021-07-09 19:59:59","sd_code":"998"}'
     # js_data = '{"deal_code":"210622-105245584311233"}'
     dqm_data = "key=test&requestTime="+rt+"&secret=1a2b3c4d5e6f7g8h9i10j11k12l&version=3.0&serviceType="+jk+"&data" \
                                                                                                             "="+js_data

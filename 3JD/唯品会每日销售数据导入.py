@@ -58,7 +58,7 @@ df = df.loc[:,cols]
 df = df[~df['txm'].isin(['0'])]
 
 df = df.astype(object).where(pd.notnull(df), None)
-df.to_excel(r"Z:\IT部\个人文件\燕江洪\※每日销售数据\唯品会\唯品会"+df['rq'][0]+".xlsx",index = False)
+# df.to_excel(r"Z:\IT部\个人文件\燕江洪\※每日销售数据\唯品会\唯品会"+df['rq'][0]+".xlsx",index = False)
 
 #将数据导入数据库
 columns = ','.join(list(df.columns))

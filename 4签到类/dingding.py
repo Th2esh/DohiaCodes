@@ -1,10 +1,12 @@
 import requests
 import json
 import pymysql
+import datetime
 
 
 
-def dingmessage():
+
+def dingmessage(xiaoxi):
 # 请求的URL，WebHook地址
     webhook = "https://oapi.dingtalk.com/robot/send?access_token=b8f8d6097b1a00289056907fec8694e5aab89d545038deb06958d04ccdc6631e"
 #构建请求头部
@@ -13,7 +15,7 @@ def dingmessage():
         "Charset": "UTF-8"
 }
 #构建请求数据
-    tex = "上班注意安全，不要迟到,克隆订单每天需要跑"
+    tex = xiaoxi +"\n715直播两仓发货统计\n"+datetime.datetime.now().strftime('%H:%M:%S')
     message ={
 
         "msgtype": "text",

@@ -49,7 +49,7 @@ def ckycd(content):
     return data
 
 def app_ckycd(ycck,yrck):
-    df = pd.read_excel('ycd.xlsx')
+    df = pd.read_excel('ycd.xlsx',sheet_name="Sheet1")
     sku_list = []
     for i in range(len(df['SKU'].to_list())):
         sku_list.append('{"sku":"'+str(df['SKU'].to_list()[i])+'","dj":"1.00","sl":"'+str(df['SL'].to_list()[i])+'"}')

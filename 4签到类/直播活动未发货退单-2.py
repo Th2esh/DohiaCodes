@@ -3,13 +3,12 @@ import pymysql
 from pandas.core import apply
 from sshtunnel import SSHTunnelForwarder
 import os
-import numpy as np
 import time
 import datetime
 from dingding import dingmessage
 
 def qushu():
-    server = SSHTunnelForwarder(ssh_address_or_host=('39.100.94.96',22),
+    server= SSHTunnelForwarder(ssh_address_or_host=('39.100.94.96',22),
                                 ssh_username='efast',ssh_password='51ksCg7eZ!VUgNx',
                                 remote_bind_address=('rm-vy1p7dyx917c11za2.mysql.rds.aliyuncs.com' , 3306))
     server.start()

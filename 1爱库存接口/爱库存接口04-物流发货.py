@@ -93,7 +93,7 @@ if __name__ == '__main__':
     for x in shipping_code:
         if x == 'zto':
             new_shipping_code.append('zhongtong')
-        elif x == 'sf':
+        elif x == 'sfsy':
             new_shipping_code.append('shunfeng')
         elif x == 'yto':
             new_shipping_code.append('yuantong')

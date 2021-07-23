@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     # time.sleep(10800)
 
-    df = pd.read_excel("wph-7.15.xlsx",sheet_name="Sheet2")
+    df = pd.read_excel("wph7.21.xlsx",sheet_name="Sheet2")
     sku_list = df['内部货号'].to_list()
     sl_list = df['虚加数量'].to_list()
     sl_list_x = []

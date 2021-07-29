@@ -1,18 +1,18 @@
-import time
 import datetime
-now = time.time()
-a = int(now)
-print(a)
-b = 1626358140
-while a < b:
+import time
+
+def timeChanged(dt):
+    timeArray = time.strptime(dt, "%Y-%m-%d %H:%M:%S")
+    timeStamp = time.mktime(timeArray)
+    return timeStamp
+
+
+
+
+
+
+
+while time.time() < timeChanged("2021-07-26 16:47:00"):
     print(datetime.datetime.now().strftime('%H:%M:%S'))
-    time.sleep(10)
-    # # now = time.time()
-    #
-    # # if time
-    # print(type(now))
-# a = 1626356894
-# b = 1626356939
-# while a > b:
-#     print("1")
+    time.sleep(20)
 

@@ -3,7 +3,7 @@ import pymysql
 import logging
 import os
 #这是一个测试Git是否生效的语句
-st = '2021-07-22'
+st = '2021-07-27'
 
 #连接数据库
 db = pymysql.connect(host='192.168.20.12', user='ych', password='123456', database='qudao_sale', port=3306,

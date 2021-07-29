@@ -6,7 +6,7 @@ import datetime
 
 
 
-def dingmessage():
+def dingmessage(xiaoxi):
 # 请求的URL，WebHook地址
     webhook = "https://oapi.dingtalk.com/robot/send?access_token=b8f8d6097b1a00289056907fec8694e5aab89d545038deb06958d04ccdc6631e"
 #构建请求头部
@@ -15,7 +15,7 @@ def dingmessage():
         "Charset": "UTF-8"
 }
 #构建请求数据
-    tex = xiaoxi +"\n715直播销售退货\n"+datetime.datetime.now().strftime('%H:%M:%S')
+    tex = xiaoxi +"\n726直播退货数据\n"+datetime.datetime.now().strftime('%H:%M:%S')
     message ={
 
         "msgtype": "text",
@@ -25,7 +25,8 @@ def dingmessage():
         "at": {
 
             "isAtAll": True
-        
+        }
+
     }
 #对请求的数据进行json封装
     message_json = json.dumps(message)
@@ -36,11 +37,3 @@ def dingmessage():
 
 if __name__=="__main__":
     dingmessage()
-
-
-
-    ]
-
-
-
-    

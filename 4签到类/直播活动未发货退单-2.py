@@ -21,7 +21,7 @@ def qushu():
     #642351881895  7.15日
 
     cur.execute("SELECT taobao_refunds_trade_items.outer_id AS outsku, taobao_refunds_trade_items.sku AS ggms, "
-                "sum( taobao_refunds_trade_items.num ) AS sl FROM taobao_refunds_trade, taobao_refunds_trade_items WHERE taobao_refunds_trade.trid = taobao_refunds_trade_items.trid AND taobao_refunds_trade_items.num_iid = 642351881895 GROUP BY outsku, ggms")
+                "sum( taobao_refunds_trade_items.num ) AS sl FROM taobao_refunds_trade, taobao_refunds_trade_items WHERE taobao_refunds_trade.trid = taobao_refunds_trade_items.trid AND taobao_refunds_trade_items.num_iid = 644828773154 GROUP BY outsku, ggms")
 
     # cur.execute("SELECT taobao_refunds_trade_items.outer_id AS outsku, taobao_refunds_trade_items.sku AS ggms, "
     #             "sum( taobao_refunds_trade_items.num ) AS sl FROM taobao_refunds_trade, taobao_refunds_trade_items WHERE taobao_refunds_trade.trid = taobao_refunds_trade_items.trid AND taobao_refunds_trade_items.num_iid = 648584312113 GROUP BY outsku, ggms")
@@ -61,13 +61,17 @@ def qushu():
     return tp_en
 
 
-
+def timeChanged(dt):
+    timeArray = time.strptime(dt, "%Y-%m-%d %H:%M:%S")
+    timeStamp = time.mktime(timeArray)
+    return timeStamp
 
 if __name__=="__main__":
-    # mmm = tp_en
-    while 2 > 1:
+    while time.time() < timeChanged("2021-07-27 09:30:00"):
         dingmessage(qushu())
+        print(datetime.datetime.now().strftime('%H:%M:%S'))
         time.sleep(900)
+
 
 
 

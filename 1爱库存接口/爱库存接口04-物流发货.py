@@ -16,7 +16,6 @@ def hsmd(secert):
     return str_sha1
 
 def akc_wlhc(contents):
-
     # 随机码获取区域
     s = "0123456789abcdefghijklmnopqrstuvwxyz"
 

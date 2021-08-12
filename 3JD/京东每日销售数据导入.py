@@ -60,7 +60,6 @@ df.drop(df.columns[[6]],axis = 1,inplace = True)
 
 
 df = df.astype(object).where(pd.notnull(df), None)
-df.to_excel(r"\\192.168.20.66\fileshare\IT部\个人文件\燕江洪\※每日销售数据\京东自营\京东自营_"+st+".xlsx",index = False)
 
 #将数据写入数据库
 columns = ','.join(list(df.columns))

@@ -58,26 +58,11 @@ while(3>2):
                             time.sleep(3)
                             driver.find_element_by_xpath('//*[@id="password"]').send_keys('lifei.268')
                             time.sleep(3)
-
-
                             driver.find_element_by_xpath('//*[@id="login_button"]').click()
                             time.sleep(3)
-                            driver.find_element_by_xpath('//*[@id="side-bar-con"]/dt[3]').click()
-                            time.sleep(3)
-                            driver.find_element_by_xpath('//*[@id="side-bar-con"]/dd[3]/div/div[1]/a[1]').click()
-                            time.sleep(3)
-                            ###切换到iframe###
-                            driver.switch_to.frame(driver.find_element_by_xpath('//*[@id="退单列表"]'))
-                            driver.find_element_by_xpath('//*[@id="search_return_shipping_sn"]').send_keys(str(temp_code))
-                            time.sleep(3)
-                            driver.find_element_by_xpath('//*[@id="order_list_search"]').click()
-                            time.sleep(3)
-                            driver.find_element_by_xpath('//*[@id="order_list_table"]/table/tbody/tr[1]/td[2]/a').click()
-                            time.sleep(3)
-                            driver.switch_to.default_content()
-                            driver.switch_to.frame(driver.find_element_by_xpath('//*[@id="退单详细' + str(row[10]) + '"]'))
-                            time.sleep(3)
-                            driver.find_element_by_xpath('//*[@id="order_qr_' + str(row[9]) + '"]').click()
+                            driver.get("http://39.100.94.96/e3/webopm/web/?app_act=refund/refund_list/do_detail&return_order_id="+str(row[9]))
+                            time.sleep(10)
+                            driver.find_element_by_xpath('//*[@id="order_qr_' + str(row[9]) + '"]')
                             time.sleep(3)
                             # noinspection PyDeprecation
                             alert = driver.switch_to_alert()
@@ -140,13 +125,11 @@ while(3>2):
                             time.sleep(3)
                             driver.find_element_by_xpath('//*[@id="login_button"]').click()
                             time.sleep(3)
-                            driver.find_element_by_xpath('//*[@id="side-bar-con"]/dt[3]').click()
-                            time.sleep(3)
-                            driver.find_element_by_xpath('//*[@id="side-bar-con"]/dd[3]/div/div[1]/a[1]').click()
-                            time.sleep(3)
-                            ###切换到iframe###
-                            driver.switch_to.frame(driver.find_element_by_xpath('//*[@id="退单列表"]'))
-                            driver.find_element_by_xpath('//*[@id="search_return_shipping_sn"]').send_keys(str(temp_code))
+
+                            driver.get("http://39.100.94.96/e3/webopm/web/?app_act=refund/refund_list/do_list")
+                            time.sleep(10)
+                            driver.find_element_by_xpath('//*[@id="search_return_shipping_sn"]').send_keys(
+                                "str(temp_code)")
                             time.sleep(3)
                             driver.find_element_by_xpath('//*[@id="order_list_search"]').click()
                             time.sleep(3)

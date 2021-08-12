@@ -28,188 +28,13 @@ def mysql_query_results(sql):
 
     # df = pd.DataFrame(results)
     # return df
-
-
-def clone_order_action(clone_goods_sn,real_goods_sn,ck_id):
-    from selenium import webdriver
-    from selenium.webdriver.support.select import Select
-    import time
-    import pyautogui
-    from sshtunnel import SSHTunnelForwarder
-    import pymysql
-    import pandas as pd
-
-    import os
-
-    server = SSHTunnelForwarder(ssh_address_or_host=('39.100.94.96', 22), ssh_username='efast',
-                                ssh_password='51ksCg7eZ!VUgNx',
-                                remote_bind_address=('rm-vy1p7dyx917c11za2.mysql.rds.aliyuncs.com', 3306))
-    server.start()
-    db = pymysql.connect(host='127.0.0.1', port=server.local_bind_port, user='jusr2mmi49d8', passwd='uEZBjc9tQwoN',
-                         db='e3', charset='utf8')
-    cur = db.cursor()
-    cur.execute('select order_info.order_sn as osn,order_info.order_id,order_goods.id from order_info,order_goods '
-                'where '
-                'order_info.order_id = order_goods.order_id and order_info.fhck_id = 24 and order_info.order_status = 1 and order_goods.goods_sn ='+str(clone_goods_sn)+' order by osn asc')
-    results = cur.fetchall()
-    db.commit()
-
-    # print(results)
-    # breakpoint()
-
-    if len(results) == 0:
-        print('No Order')
-        # os._exit(0)
-        # pass
-        # quit()
-    else:
-        df = pd.DataFrame(results)
-        order_sn_list = df[0].to_list()
-        order_id_list = df[1].to_list()
-        order_goods_id_list = df[2].to_list()
-
-
-        # print(order_sn_list)
-        # breakpoint()
-
-
-
-        # ready by Chrome
-        driver = webdriver.Chrome()
-        driver.maximize_window()
-        driver.implicitly_wait(6)
-        driver.get("http://39.100.94.96/e3/webopm/web/")
-
-        # Login System
-        driver.find_element_by_xpath('//*[@id="user_name"]').send_keys('clone')
-        time.sleep(3)
-        driver.find_element_by_xpath('//*[@id="password"]').send_keys('Dohia&11')
-        time.sleep(3)
-        driver.find_element_by_xpath('//*[@id="login_button"]').click()
-        time.sleep(3)
-
-        js = []
-        for i in range(len(order_sn_list)):
-            # Open New_tab reload MainPage
-            # driver.execute_script('window.open("");')
-            driver.switch_to.window(driver.window_handles[-1])
-            pyautogui.hotkey('Ctrl', 't')
-            time.sleep(6)
-            driver.switch_to.window(driver.window_handles[-1])
-            driver.get("http://39.100.94.96/e3/webopm/web/")
-            time.sleep(6)
-            driver.find_element_by_xpath('//*[@id="side-bar-con"]/dt[2]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="side-bar-con"]/dd[2]/div/div[2]/a[1]').click()
-
-            # Action
-            driver.switch_to.frame(driver.find_element_by_xpath('//*[@id="销售订单列表"]'))
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_cus_con1"]/option[2]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="show_more_btn"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_sku"]').send_keys(clone_goods_sn)
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_fhck_id_checkboxes"]/span/input').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_fhck_id_checkboxes"]/div/ul/li[49]/input').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_fhck_id_checkboxes"]/div/p/a[1]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="show_more_btn"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="order_list_search"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="set_order_status_1"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="changecolor"]/tbody/tr[1]/td[3]/a').click()
-            time.sleep(3)
-            driver.switch_to.default_content()
-            time.sleep(3)
-            driver.switch_to.frame(driver.find_element_by_xpath('//*[@id="订单详细'+str(order_sn_list[i])+'"]'))
-            time.sleep(3)
-            driver.find_elements_by_xpath('//*[@id="order_wtzph_'+str(order_id_list[i])+'"]')[1].click()
-            time.sleep(3)
-            # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
-            time.sleep(10)
-            driver.find_element_by_xpath('//*[@id="order_czddzt_'+str(order_id_list[i])+'"]').click()
-            time.sleep(10)
-            # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
-            time.sleep(10)
-            # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
-            time.sleep(10)
-            driver.find_element_by_xpath('//*[@id="edit_goods"]').click()
-            time.sleep(3)
-            # driver.find_element_by_xpath('//*[@id="edit_goods"]').click()
-            # time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="goods_'+str(order_goods_id_list[i])+'"]/td[20]/div[3]/div[2]/a').click()
-            time.sleep(3)
-            driver.switch_to.default_content()
-            time.sleep(3)
-            driver.switch_to.window(driver.window_handles[-1])
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="key_word"]').send_keys(real_goods_sn)
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="btn-search"]').click()
-
-            ######
-            cur.execute("select goods_id from goods where goods_sn ="+real_goods_sn)
-            results1 = cur.fetchall()
-            db.commit()
-            ######
-
-
-            time.sleep(10)
-            driver.find_element_by_xpath('//*[@id="node-'+str(results1[0][0])+'"]/td[4]/a[2]').click()
-            time.sleep(3)
-            driver.switch_to.window(driver.window_handles[-1])
-            time.sleep(3)
-            driver.switch_to.frame(driver.find_element_by_xpath('//*[@id="订单详细' + str(order_sn_list[i]) + '"]'))
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="goods_'+str(order_goods_id_list[i])+'"]/td[20]/div/div[2]/a').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="save_goods"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="edit_fahuo"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="fhck_id"]/option['+str(ck_id)+']').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="save_fahuo"]').click()
-            time.sleep(3)
-            # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
-            time.sleep(10)
-            driver.find_element_by_xpath('//*[@id="order_qr_'+str(order_id_list[i])+'"]').click()
-            time.sleep(10)
-            # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
-
-            # Close Used Tab
-            time.sleep(10)
-            pyautogui.hotkey('Ctrl', 'w')
-            time.sleep(3)
-            js.append('*')
-        driver.quit()
-        print(js)
-
-
-
-
 def clone_order_action2(clone_goods_sn,real_goods_sn):
     from selenium import webdriver
-    from selenium.webdriver.support.select import Select
     import time
     import pyautogui
     from sshtunnel import SSHTunnelForwarder
     import pymysql
     import pandas as pd
-
-    import os
-
     server = SSHTunnelForwarder(ssh_address_or_host=('39.100.94.96', 22), ssh_username='efast',
                                 ssh_password='51ksCg7eZ!VUgNx',
                                 remote_bind_address=('rm-vy1p7dyx917c11za2.mysql.rds.aliyuncs.com', 3306))
@@ -219,18 +44,11 @@ def clone_order_action2(clone_goods_sn,real_goods_sn):
     cur = db.cursor()
     cur.execute('select order_info.order_sn as osn,order_info.order_id,order_goods.id from order_info,order_goods '
                 'where '
-                'order_info.order_id = order_goods.order_id and order_info.fhck_id = 24 and order_info.order_status = 1 and order_goods.goods_sn ='+str(clone_goods_sn)+' order by osn asc')
+                'order_info.order_id = order_goods.order_id and order_info.fhck_id = 24 and order_info.order_status = 0 and order_goods.goods_sn ='+str(clone_goods_sn)+' order by osn asc')
     results = cur.fetchall()
     db.commit()
-
-    # print(results)
-    # breakpoint()
-
     if len(results) == 0:
         print('No Order')
-        # os._exit(0)
-        # pass
-        # quit()
     else:
         df = pd.DataFrame(results)
         order_sn_list = df[0].to_list()
@@ -242,17 +60,12 @@ def clone_order_action2(clone_goods_sn,real_goods_sn):
         cur.execute("select sl from spkcb where sku = '"+str(real_goods_sn)+"' and ck_id = 3")
         results_pdkc = cur.fetchall()
         db.commit()
-
         dfr = pd.DataFrame(results_pdkc)
-
         xtem = dfr[0].to_list()
-
         if xtem[0] != 0:
             ck_id = 2
         else:
             ck_id = 4
-
-
         driver = webdriver.Chrome()
         driver.maximize_window()
         driver.implicitly_wait(6)
@@ -261,71 +74,20 @@ def clone_order_action2(clone_goods_sn,real_goods_sn):
         # Login System
         driver.find_element_by_xpath('//*[@id="user_name"]').send_keys('clone')
         time.sleep(3)
-        driver.find_element_by_xpath('//*[@id="password"]').send_keys('Dohia&22')
+        driver.find_element_by_xpath('//*[@id="password"]').send_keys('Dohia&33')
         time.sleep(3)
         driver.find_element_by_xpath('//*[@id="login_button"]').click()
         time.sleep(3)
 
         js = []
-        # js = len(order_sn_list)
-        for i in range(len(order_sn_list)):
-            # Open New_tab reload MainPage
-            # driver.execute_script('window.open("");')
+        for i in range(len(order_id_list)):
             driver.switch_to.window(driver.window_handles[-1])
             pyautogui.hotkey('Ctrl', 't')
-            time.sleep(5)
+            time.sleep(3)
             driver.switch_to.window(driver.window_handles[-1])
-            driver.get("http://39.100.94.96/e3/webopm/web/")
+            driver.get("http://39.100.94.96/e3/webopm/web/?app_act=order/order_list/do_detail&order_id="+str(order_id_list[i]))
             time.sleep(5)
-            # driver.find_element_by_xpath('//*[@id="side-bar-con"]/dt[2]').click()
-            # time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="side-bar-con"]/dd[2]/div/div[2]/a[1]').click()
-
-            # Action
-            driver.switch_to.frame(driver.find_element_by_xpath('//*[@id="销售订单列表"]'))
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_cus_con1"]/option[2]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="show_more_btn"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_sku"]').send_keys(clone_goods_sn)
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_fhck_id_checkboxes"]/span/input').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_fhck_id_checkboxes"]/div/ul/li[3]/input').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="search_fhck_id_checkboxes"]/div/p/a[1]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="show_more_btn"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="order_list_search"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="set_order_status_1"]').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="changecolor"]/tbody/tr[1]/td[3]/a').click()
-            time.sleep(3)
-            driver.switch_to.default_content()
-            time.sleep(3)
-            driver.switch_to.frame(driver.find_element_by_xpath('//*[@id="订单详细'+str(order_sn_list[i])+'"]'))
-            time.sleep(3)
-            driver.find_elements_by_xpath('//*[@id="order_wtzph_'+str(order_id_list[i])+'"]')[1].click()
-            time.sleep(3)
-            # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="order_czddzt_'+str(order_id_list[i])+'"]').click()
-            time.sleep(3)
-            # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
-            time.sleep(3)
-            # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="edit_goods"]').click()
-            time.sleep(3)
-            # driver.find_element_by_xpath('//*[@id="edit_goods"]').click()
-            # time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="goods_'+str(order_goods_id_list[i])+'"]/td[20]/div[3]/div[2]/a').click()
+            driver.find_element_by_xpath('//*[@id="goods_'+str(order_goods_id_list[i])+'"]/td[12]/div/a[3]').click()
             time.sleep(3)
             driver.switch_to.default_content()
             time.sleep(3)
@@ -340,18 +102,16 @@ def clone_order_action2(clone_goods_sn,real_goods_sn):
             results1 = cur.fetchall()
             db.commit()
             ######
-
-
-            time.sleep(5)
-            driver.find_element_by_xpath('//*[@id="node-'+str(results1[0][0])+'"]/td[4]/a[2]').click()
+            time.sleep(3)
+            driver.find_element_by_xpath('//*[@id="node-'+str(results1[0][0])+'"]/td[5]/a[2]').click()
             time.sleep(3)
             driver.switch_to.window(driver.window_handles[-1])
             time.sleep(3)
-            driver.switch_to.frame(driver.find_element_by_xpath('//*[@id="订单详细' + str(order_sn_list[i]) + '"]'))
+            driver.find_element_by_xpath('//*[@id="openDivContentgoods_edit_popDiv"]/div/div/input').click()
             time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="goods_'+str(order_goods_id_list[i])+'"]/td[19]/div/div[2]/a').click()
-            time.sleep(3)
-            driver.find_element_by_xpath('//*[@id="save_goods"]').click()
+            driver.switch_to_alert().accept()
+            time.sleep(5)
+            driver.switch_to.window(driver.window_handles[-1])
             time.sleep(3)
             driver.find_element_by_xpath('//*[@id="edit_fahuo"]').click()
             time.sleep(3)
@@ -360,20 +120,20 @@ def clone_order_action2(clone_goods_sn,real_goods_sn):
             driver.find_element_by_xpath('//*[@id="save_fahuo"]').click()
             time.sleep(3)
             # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
-            time.sleep(10)
             driver.find_element_by_xpath('//*[@id="order_qr_'+str(order_id_list[i])+'"]').click()
             time.sleep(3)
             # noinspection PyDeprecation
             driver.switch_to_alert().accept()
+            time.sleep(3)
+            driver.find_element_by_xpath('//*[@id="order_syncwms_'+str(order_id_list[i])+'"]').click()
+            time.sleep(3)
+            driver.switch_to_alert().accept()
+            time.sleep(3)
 
             # Close Used Tab
             time.sleep(10)
             pyautogui.hotkey('Ctrl', 'w')
             time.sleep(3)
             js.append('*')
-            filename = 'jishu.txt'
-            with open(filename, 'a') as file_object:
-                file_object.write("1\n")
         driver.quit()
         print(js)

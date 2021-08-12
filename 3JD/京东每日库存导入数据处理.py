@@ -3,7 +3,7 @@ import pymysql
 import logging
 import os
 #这是一个测试Git是否生效的语句
-st = '2021-07-27'
+st = '2021-08-08'
 
 #连接数据库
 db = pymysql.connect(host='192.168.20.12', user='ych', password='123456', database='qudao_sale', port=3306,
@@ -51,7 +51,7 @@ df = df.reindex(columns = ['rq','bh','mc','qgzkc','bjkc','dzkc','shkc','gzkc','c
 df = df[~df['qgzkc'].isin([0])]
 
 #将数据保存到特定文件夹
-df.to_excel(r"\\192.168.20.66\fileshare\IT部\个人文件\燕江洪\※每日销售数据\京东自营库存\库存导入_"+st+".xlsx",index = False)
+# df.to_excel(r"\\192.168.20.66\fileshare\IT部\个人文件\燕江洪\※每日销售数据\京东自营库存\库存导入_"+st+".xlsx",index = False)
 
 
 #将数据写入数据库

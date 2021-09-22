@@ -15,7 +15,7 @@ def dingmessage(xiaoxi):
         "Charset": "UTF-8"
 }
 #构建请求数据
-    tex = xiaoxi +"\n726直播退货数据\n"+datetime.datetime.now().strftime('%H:%M:%S')
+    tex = xiaoxi +"\n直播退货数据\n"+datetime.datetime.now().strftime('%H:%M:%S')
     message ={
 
         "msgtype": "text",

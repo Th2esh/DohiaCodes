@@ -4,11 +4,25 @@ import pymysql
 from selenium import webdriver
 import datetime
 import time
+import requests
+import json
+import pandas as pd
+import smtplib
 
-server = SSHTunnelForwarder(ssh_address_or_host=('39.100.94.96', 22), ssh_username='efast',ssh_password='51ksCg7eZ!VUgNx',remote_bind_address=('rm-vy1p7dyx917c11za2.mysql.rds.aliyuncs.com', 3306))
-server.start()
-db = pymysql.connect(host='127.0.0.1', port=server.local_bind_port, user='jusr2mmi49d8', passwd='uEZBjc9tQwoN',db='e3', charset='utf8')
-cur = db.cursor()
+
+def myinterface03(temp_code):
+    url = "http://39.100.94.96/e3/dohia/interfaces/return_goods.php?"
+
+    params = {
+        "temp_code":temp_code
+    }
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/81.0.4044.122 Safari/537.36',
+    }
+    response = requests.get(url=url, params=params, headers=headers)
+    data = json.loads(response.text, encoding='utf-8')
+    return data
 
 
 temp_code = str(input('>>>扫入退回订单的运单号:'))
@@ -16,11 +30,12 @@ temp_code = str(input('>>>扫入退回订单的运单号:'))
 while(3>2):
     if str(temp_code) == str(999):
         print('>>>程序关闭!!!')
-        server.close()
         break
 
     else:
-        cur.execute("select goods_barcode.barcode,order_return_goods.goods_number,order_return.relating_order_sn,order_return.refund_deal_code,order_return_goods.goods_name,order_return.relating_fhck_id,order_return.return_shipping_name,order_return.return_shipping_sn,order_return_goods.goods_sn,order_return.return_order_id,order_return.return_order_sn from order_return,order_return_goods,goods_barcode where order_return.return_order_id = order_return_goods.return_order_id and order_return_goods.goods_id = goods_barcode.goods_id and order_return.return_shipping_sn = '"+temp_code+"'")
+        tracking_number = str(input('>>>扫入退回订单的运单号:'))
+        result = myinterface03(tracking_number)
+        res = json.loads(result[0].replace("'", '"').replace("'", '"'))
         results = cur.fetchall()
         check_list = []
         id_list = []
@@ -120,11 +135,11 @@ while(3>2):
                             driver.get("http://39.100.94.96/e3/webopm/web/")
 
                             driver.find_element_by_xpath('//*[@id="user_name"]').send_keys('13147')
-                            time.sleep(3)
+                            time.sleep(5)
                             driver.find_element_by_xpath('//*[@id="password"]').send_keys('lifei.268')
-                            time.sleep(3)
+                            time.sleep(5)
                             driver.find_element_by_xpath('//*[@id="login_button"]').click()
-                            time.sleep(3)
+                            time.sleep(5)
 
                             driver.get("http://39.100.94.96/e3/webopm/web/?app_act=refund/refund_list/do_list")
                             time.sleep(10)

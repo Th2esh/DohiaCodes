@@ -21,7 +21,7 @@ def qushu():
     #642351881895  7.15日
 
     cur.execute("SELECT taobao_refunds_trade_items.outer_id AS outsku, taobao_refunds_trade_items.sku AS ggms, "
-                "sum( taobao_refunds_trade_items.num ) AS sl FROM taobao_refunds_trade, taobao_refunds_trade_items WHERE taobao_refunds_trade.trid = taobao_refunds_trade_items.trid AND taobao_refunds_trade_items.num_iid = 644828773154 GROUP BY outsku, ggms")
+                "sum( taobao_refunds_trade_items.num ) AS sl FROM taobao_refunds_trade, taobao_refunds_trade_items WHERE taobao_refunds_trade.trid = taobao_refunds_trade_items.trid AND taobao_refunds_trade_items.num_iid = 649319436456 GROUP BY outsku, ggms")
 
     # cur.execute("SELECT taobao_refunds_trade_items.outer_id AS outsku, taobao_refunds_trade_items.sku AS ggms, "
     #             "sum( taobao_refunds_trade_items.num ) AS sl FROM taobao_refunds_trade, taobao_refunds_trade_items WHERE taobao_refunds_trade.trid = taobao_refunds_trade_items.trid AND taobao_refunds_trade_items.num_iid = 648584312113 GROUP BY outsku, ggms")
@@ -47,7 +47,7 @@ def qushu():
         # s.append(i.find(':',2))
         # s.append(i)
 
-        s.append(i[20:24]+' '+i[36:43])
+        s.append(i[20:25]+' '+i[44:])
 
     new_hh = df['货号'].to_list()
     new_sl = df['数量'].to_list()
@@ -67,7 +67,7 @@ def timeChanged(dt):
     return timeStamp
 
 if __name__=="__main__":
-    while time.time() < timeChanged("2021-07-27 09:30:00"):
+    while time.time() < timeChanged("2021-08-16 09:30:00"):
         dingmessage(qushu())
         print(datetime.datetime.now().strftime('%H:%M:%S'))
         time.sleep(900)

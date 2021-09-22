@@ -25,7 +25,7 @@ def rq(contents):
     # 接口类型
     jk = 'kctzd.add'
     # json数据
-    js_data = '{"djbh": "wphhztz'+str(dj_random)+'","ckCode": "310201","sku": '+str(contents)+'}'
+    js_data = '{"djbh": "wphhztz'+str(dj_random)+'","ckCode": "310204","sku": '+str(contents)+'}'
 
     dqm_data = "key=test&requestTime="+rt+"&secret=1a2b3c4d5e6f7g8h9i10j11k12l&version=3.0&serviceType="+jk+"&data" \
                                                                                                             "="+js_data
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     df = pd.read_excel("wph.xlsx",sheet_name="Sheet1")
     sku_list = df['内部货号'].to_list()
-    sl_list = df['虚加数量'].to_list()
+    sl_list = df['数量'].to_list()
     sl_list_x = []
     for i in sl_list:
         sl_list_x.append(int(i))

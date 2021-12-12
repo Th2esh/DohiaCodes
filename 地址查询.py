@@ -29,7 +29,7 @@ db = pymysql.connect(host='127.0.0.1', port=server.local_bind_port, user='jusr2m
 dizhi = []
 for i in order:
     cur = db.cursor()
-    cur.execute("select user_name from order_info where order_sn ='" + str(i) + "'")
+    cur.execute("select user_name from order_info where order_sn  ='" + str(i) + "'")
     results = cur.fetchall()
     # res = results[0][0][0].replace(" ", "")
     res = results[0][0]

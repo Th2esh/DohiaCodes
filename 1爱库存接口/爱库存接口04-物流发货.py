@@ -54,20 +54,18 @@ def akc_wlhc(contents):
     data_rx = json.loads(response.text)
     return data_rx
 
-def read_input_data():
-    df  = pd.read_excel("6.xlsx")
-    return df
 
 
 
 if __name__ == '__main__':
-    res = rq()
+    res = rq("1")
     order_code = []
     shipping_code = []
     shipping_sn = []
     #遍历获取到的值并写入到列表
     jj = res['data']['page']['pageTotal']
     for i in range(1, int(jj)+1, 1):
+        res = rq(i)
         for j in range(100):
             try:
                 order_code.append(res['data']['orderListGets'][j]['deal_code'])
@@ -101,6 +99,7 @@ if __name__ == '__main__':
         else:
             new_shipping_code.append('yunda')
 
+    pd.DataFrame({'dd':order_code}).to_excel('ddd.xlsx',index=False)
 
 
 

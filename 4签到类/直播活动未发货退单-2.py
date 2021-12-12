@@ -5,6 +5,7 @@ from sshtunnel import SSHTunnelForwarder
 import os
 import time
 import datetime
+import pandas as pd
 from dingding import dingmessage
 
 def qushu():
@@ -21,7 +22,7 @@ def qushu():
     #642351881895  7.15日
 
     cur.execute("SELECT taobao_refunds_trade_items.outer_id AS outsku, taobao_refunds_trade_items.sku AS ggms, "
-                "sum( taobao_refunds_trade_items.num ) AS sl FROM taobao_refunds_trade, taobao_refunds_trade_items WHERE taobao_refunds_trade.trid = taobao_refunds_trade_items.trid AND taobao_refunds_trade_items.num_iid = 649319436456 GROUP BY outsku, ggms")
+                "sum( taobao_refunds_trade_items.num ) AS sl FROM taobao_refunds_trade, taobao_refunds_trade_items WHERE taobao_refunds_trade.trid = taobao_refunds_trade_items.trid AND taobao_refunds_trade_items.num_iid = 648584312113  GROUP BY outsku, ggms")
 
     # cur.execute("SELECT taobao_refunds_trade_items.outer_id AS outsku, taobao_refunds_trade_items.sku AS ggms, "
     #             "sum( taobao_refunds_trade_items.num ) AS sl FROM taobao_refunds_trade, taobao_refunds_trade_items WHERE taobao_refunds_trade.trid = taobao_refunds_trade_items.trid AND taobao_refunds_trade_items.num_iid = 648584312113 GROUP BY outsku, ggms")
@@ -40,24 +41,20 @@ def qushu():
 
     s = []
     for i in df1:
-        # regex = '("适用床尺寸:").[a-zA-z0-9_]*'
-        # regex = re.compile(r'\d+')
-        # s.append(re.findall(regex, i))
-        # s.append(i[20:24]+" | "+i[52:])
-        # s.append(i.find(':',2))
-        # s.append(i)
-
         s.append(i[20:25]+' '+i[44:])
 
     new_hh = df['货号'].to_list()
     new_sl = df['数量'].to_list()
     tp_en = str(pd.DataFrame({'货号':new_hh,'属性':s,'数量':new_sl}))
-    # print(datetime.datetime.now().strftime('%H-%M-%S'))
-    # print(tp_en)
-    # print('\n')
-    # tp_en.to_excel('zhibo2_'+str(datetime.datetime.now().strftime('%H%M%S'))+'.xlsx', index=False)
-    # print('###')
-    # time.sleep(120)
+    res = pd.DataFrame({"货号": new_hh, "属性": s, "数量": new_sl})
+
+    nts = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    print(tp_en)
+    tp_en.to_excel("Z:\\IT\\数据组\\直播\\" + str(nts) + ".xlsx", index=False)
+    # res.to_excel("111.xlsx", index=False)
+
+
+
     return tp_en
 
 
@@ -67,11 +64,11 @@ def timeChanged(dt):
     return timeStamp
 
 if __name__=="__main__":
-    while time.time() < timeChanged("2021-08-16 09:30:00"):
-        dingmessage(qushu())
-        print(datetime.datetime.now().strftime('%H:%M:%S'))
-        time.sleep(900)
-
+    # while time.time() < timeChanged("2021-12-08 08:59:59"):
+    #     dingmessage(qushu())
+    #     print(datetime.datetime.now().strftime('%H:%M:%S'))
+    #     time.sleep(1200)
+    qushu()
 
 
 

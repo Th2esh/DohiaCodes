@@ -72,10 +72,13 @@ def clone_order_action2(clone_goods_sn,real_goods_sn):
         driver.get("http://39.100.94.96/e3/webopm/web/")
 
         # Login System
+        # noinspection PyDeprecation
         driver.find_element_by_xpath('//*[@id="user_name"]').send_keys('clone')
         time.sleep(3)
-        driver.find_element_by_xpath('//*[@id="password"]').send_keys('Dohia&44')
+        # noinspection PyDeprecation
+        driver.find_element_by_xpath('//*[@id="password"]').send_keys('Dohia&66')
         time.sleep(3)
+        # noinspection PyDeprecation
         driver.find_element_by_xpath('//*[@id="login_button"]').click()
         time.sleep(3)
 
@@ -87,16 +90,20 @@ def clone_order_action2(clone_goods_sn,real_goods_sn):
             driver.switch_to.window(driver.window_handles[-1])
             driver.get("http://39.100.94.96/e3/webopm/web/?app_act=order/order_list/do_detail&order_id="+str(order_id_list[i]))
             time.sleep(5)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="base_info_div"]/table/tbody/tr[5]/td[2]/button[1]').click()
             time.sleep(5)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="seller_memo"]').send_keys("克隆订单"+clone_goods_sn)
             time.sleep(5)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="base_info_div"]/table/tbody/tr[5]/td[2]/button[3]').click()
             time.sleep(5)
             # element1 = driver.find_element_by_xpath('//*[@id="goods_'+str(order_goods_id_list[i])+'"]/td[12]/div/a[3]')
             # time.sleep(8)
             # driver.execute_script("$（arguments[0].click();",element1)
             # driver.find_elements_by_xpath('//*[@id="goods_'+str(order_goods_id_list[i])+'"]/td[12]/div/a[3]')[0].click()
+            # noinspection PyDeprecation
             button = driver.find_element_by_xpath('//*[@id="goods_'+str(order_goods_id_list[i])+'"]/td[12]/div/a[3]')
             driver.execute_script("$(arguments[0]).click()", button)
             time.sleep(3)
@@ -104,8 +111,10 @@ def clone_order_action2(clone_goods_sn,real_goods_sn):
             time.sleep(3)
             driver.switch_to.window(driver.window_handles[-1])
             time.sleep(3)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="key_word"]').send_keys(real_goods_sn)
             time.sleep(3)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="btn-search"]').click()
 
             ######
@@ -114,27 +123,32 @@ def clone_order_action2(clone_goods_sn,real_goods_sn):
             db.commit()
             ######
             time.sleep(3)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="node-'+str(results1[0][0])+'"]/td[5]/a[2]').click()
             time.sleep(3)
             driver.switch_to.window(driver.window_handles[-1])
             time.sleep(3)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="openDivContentgoods_edit_popDiv"]/div/div/input').click()
             time.sleep(3)
-            driver.switch_to_alert().accept()
+            driver.switch_to.alert.accept()
             time.sleep(5)
             driver.switch_to.window(driver.window_handles[-1])
             time.sleep(3)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="edit_fahuo"]').click()
             time.sleep(3)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="fhck_id"]/option['+str(ck_id)+']').click()
             time.sleep(3)
+            # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="save_fahuo"]').click()
             time.sleep(3)
             # noinspection PyDeprecation
             driver.find_element_by_xpath('//*[@id="order_qr_'+str(order_id_list[i])+'"]').click()
             time.sleep(3)
             # noinspection PyDeprecation
-            driver.switch_to_alert().accept()
+            driver.switch_to.alert.accept()
             time.sleep(3)
             # 推送WMS可以关闭
             # driver.find_element_by_xpath('//*[@id="order_syncwms_'+str(order_id_list[i])+'"]').click()

@@ -13,7 +13,7 @@ import cpca
 # print(df)
 
 ## 导入
-df = pd.read_excel('58-90.xlsx')
+df = pd.read_excel('2145-2205.xlsx')
 
 ####   处理basic表中货号转换和价格附加
 df_b = pd.read_excel('货号对照表.xlsx')

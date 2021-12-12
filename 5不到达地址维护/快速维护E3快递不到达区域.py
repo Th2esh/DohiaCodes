@@ -7,6 +7,7 @@ import os
 zh = read_file_basic('key.xlsx','Sheet1')['user'][0]
 mm = read_file_basic('key.xlsx','Sheet1')['password'][0]
 kd = read_file_basic('key.xlsx','Sheet1')['kd'][0]
+kd = read_file_basic('key.xlsx','Sheet1')['kd'][0]
 
 del_query = "delete from out_region where shipping_id ="+str(kd)
 mysql_query_kd(del_query,zh,mm)
